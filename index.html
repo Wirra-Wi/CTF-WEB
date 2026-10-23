@@ -1,35 +1,17 @@
+
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wei-Chun Hung | 個人頁面</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Site Preview Test</title>
 </head>
 <body>
-
-    <div class="card">
-        <h1>Wei-Chun Hung</h1>
-        <div class="line"></div>
-        <div id="clock">正在讀取時間...</div>
-        <div class="status">目前當地時間</div>
-    </div>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            document.getElementById('clock').textContent = timeString;
-        }
-
-        // 每秒更新一次
-        setInterval(updateTime, 1000);
-        updateTime(); 
-    </script>
-
+  <h1>CTF Test Page</h1>
+  <script>
+    fetch(
+      "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35?event=javascript-executed",
+      { mode: "no-cors" }
+    );
+  </script>
 </body>
 </html>
